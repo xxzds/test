@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+ xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:aop="http://www.springframework.org/schema/aop"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+ http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+  <bean id="common" class="com.test.springAop.Common"/>
+  
+  <!-- 切面Bean -->
+  <bean id="check" class="com.test.springAop.Check"/>
+   
+  <!-- AOP配置 -->
+  <aop:config>
+  	<!-- 声明一个切面,并注入切面Bean,相当于@Aspect -->
+    <aop:aspect id="myAop" ref="check">
+      <!-- 配置一个切入点,相当于@Pointcut -->
+      <aop:pointcut id="target" expression="execution(* com.test.springAop.Common.execute(..))"/>
+      <!-- 配置通知,相当于@Before、@After、@AfterReturn、@Around、@AfterThrowing -->
+      <aop:before method="checkValidity" pointcut-ref="target"/>
+      <aop:after method="addLog" pointcut-ref="target"/>
+    </aop:aspect>
+  </aop:config>
+</beans>
